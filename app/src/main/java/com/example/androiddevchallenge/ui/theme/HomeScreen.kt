@@ -23,22 +23,30 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Scaffold
+import androidx.compose.material.SnackbarHost
+import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.androiddevchallenge.MAX_PROGRESS_TIME
 import com.example.androiddevchallenge.MainViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen() {
+    val snackBarHostState = SnackbarHostState()
+    val coroutineScope = rememberCoroutineScope()
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -46,6 +54,9 @@ fun HomeScreen() {
                     Text(text = "CountdownTimer")
                 }
             )
+        },
+        snackbarHost = {
+            SnackbarHost(hostState = snackBarHostState)
         }
     ) {
         val viewModel: MainViewModel = viewModel()
@@ -58,6 +69,9 @@ fun HomeScreen() {
         ShowCircleProgress {
             // Time is up!
             viewModel.resetCountdown()
+            coroutineScope.launch {
+                snackBarHostState.showSnackbar("Time's Up😄")
+            }
         }
     }
 }
@@ -71,6 +85,7 @@ fun InputCountdownTime(startCountdown: (Int) -> Unit) {
             .padding(start = 16.dp, end = 16.dp)
     ) {
         var isError by rememberSaveable { mutableStateOf(value = false) }
+        val focusManager = LocalFocusManager.current
 
         OutlinedTextField(
             value = value,
@@ -79,15 +94,19 @@ fun InputCountdownTime(startCountdown: (Int) -> Unit) {
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             label = { Text(text = "Please input countdown time in seconds") },
             onValueChange = {
-                isError = (it.length > 6 || (it.isNotEmpty() && it.toInt() > MAX_PROGRESS_TIME))
+                val temp = it.trim()
+                isError = (temp.length > 6 || (temp.isNotEmpty() && temp.toInt() > MAX_PROGRESS_TIME))
                 if (isError) return@OutlinedTextField
 
-                value = it
+                value = temp
             }
         )
 
         Button(
-            onClick = { startCountdown(value.toInt()) },
+            onClick = {
+                startCountdown(value.toInt())
+                focusManager.clearFocus()
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .requiredHeight(60.dp)

@@ -43,9 +43,7 @@ class MainViewModel : ViewModel() {
                 if (!isActive) return@launch
 
                 currentCountdownTime = totalCountdownTime - second
-                if (currentCountdownTime != 0) {
-                    delay(1000L)
-                }
+                delay(1000L)
             }
         }
     }

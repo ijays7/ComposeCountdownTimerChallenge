@@ -48,11 +48,9 @@ fun ShowCircleProgress(onCountdownEndAction: () -> Unit = {}) {
         viewModel.currentCountdownTime / totalCountTime.toFloat() * FULL_DEGREE
     }
 
-    if (angle == FULL_DEGREE) {
+    CircleProgress(sweepAngle = angle) {
         onCountdownEndAction.invoke()
     }
-
-    CircleProgress(sweepAngle = angle)
     CountdownText(totalCountTime, viewModel.currentCountdownTime)
 }
 
@@ -68,13 +66,18 @@ fun CountdownText(totalCountdownTime: Int, currentCountdownTime: Int) {
 }
 
 @Composable
-fun CircleProgress(sweepAngle: Float) {
+fun CircleProgress(sweepAngle: Float, finishedListener: () -> Unit = {}) {
     val animateAngle: Float by animateFloatAsState(
         targetValue = sweepAngle,
         animationSpec = tween(
             1000, 0,
             LinearEasing
-        )
+        ),
+        finishedListener = {
+            if (sweepAngle == FULL_DEGREE) {
+                finishedListener.invoke()
+            }
+        }
     )
 
     Canvas(modifier = Modifier.fillMaxSize()) {

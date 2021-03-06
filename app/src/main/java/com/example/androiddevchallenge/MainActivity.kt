@@ -37,9 +37,8 @@ class MainActivity : AppCompatActivity() {
     // Start building your app here!
     @Composable
     fun MyApp() {
-      HomeScreen()
+        HomeScreen()
     }
-
 
     @Preview("Light Theme", widthDp = 360, heightDp = 640)
     @Composable

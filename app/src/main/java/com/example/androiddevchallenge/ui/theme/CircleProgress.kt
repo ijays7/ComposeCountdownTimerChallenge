@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.example.androiddevchallenge.ui.theme
 
 import androidx.compose.animation.core.LinearEasing
@@ -13,7 +28,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,7 +37,6 @@ import com.example.androiddevchallenge.FULL_DEGREE
 import com.example.androiddevchallenge.MainViewModel
 import com.example.androiddevchallenge.PROGRESS_CIRCLE_RADIUS
 import com.example.androiddevchallenge.PROGRESS_SIZE
-
 
 @Composable
 fun ShowCircleProgress(onCountdownEndAction: () -> Unit = {}) {
@@ -57,7 +70,8 @@ fun CountdownText(totalCountdownTime: Int, currentCountdownTime: Int) {
 @Composable
 fun CircleProgress(sweepAngle: Float) {
     val animateAngle: Float by animateFloatAsState(
-        targetValue = sweepAngle, animationSpec = tween(
+        targetValue = sweepAngle,
+        animationSpec = tween(
             1000, 0,
             LinearEasing
         )
@@ -91,5 +105,5 @@ fun CircleProgress(sweepAngle: Float) {
 @Preview
 @Composable
 fun PreviewCircleProgress() {
-   ShowCircleProgress()
+    ShowCircleProgress()
 }

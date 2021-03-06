@@ -21,7 +21,7 @@ The UI layer is fully written by Jetpack Compose, and we can learn Jetpack Compo
 
 
 
-<img src="/results/screenshot_1.png" width="260">&emsp;<img src="/results/screenshot_2.png" width="260">
+<img src="/results/screenshot_1.png" width="260">&emsp;<img src="/results/screenshot_2.png" width="260"><img src="/results/screenshot_3.png" width="260">
 
 ## License
 
